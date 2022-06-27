@@ -5,11 +5,10 @@ const routes = express.Router();
 import ExpressRouter from '@app/Router/ExpressRouter';
 
 // Controllers
-import { defaultController } from '@app/Factories/Controllers';
+import { userController } from '@app/Factories/Controllers';
 
 
-
-routes.get('/', ExpressRouter(defaultController.index));
+routes.post('/user/signup', ExpressRouter(userController.signup));
 
 
 export default routes;

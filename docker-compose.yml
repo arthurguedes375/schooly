@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:1.21.5-alpine
+    container_name: nginx-reverse_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx:/etc/nginx"
+    links:
+      - web1
+  db:
+    image: mysql:8.0.27
+    container_name: mysql-server
+    restart: always
+    volumes:
+      - "./src/app/Repositories/DB/create_db.sql:/script/init.sql"
+      - "/var/lib/mysql:/var/lib/mysql"
+    command: "--init-file /script/init.sql"
+    ports:
+      - "${MYSQL_PORT}:3306"
+    expose:
+      - ${MYSQL_PORT}
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  
+  web1:
+    build: .
+    command: start
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    volumes:
+      - ".:/app"
+    links:
+      - db

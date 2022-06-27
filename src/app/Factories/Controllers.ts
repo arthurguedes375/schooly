@@ -1,4 +1,4 @@
-import DefaultController from '@app/controllers/Default';
+import {UserController} from '@app/controllers/User';
 
 
-export const defaultController = new DefaultController();
+export const userController = new UserController();

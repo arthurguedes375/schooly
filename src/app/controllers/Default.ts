@@ -7,7 +7,6 @@ interface IDefaultController {
 
 
 class DefaultController implements IDefaultController {
-
     constructor() {
         this.index = this.index.bind(this);
     }
