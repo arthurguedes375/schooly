@@ -5,6 +5,10 @@ dotenv.config({ path: '.env' });
 import express from 'express';
 const app = express();
 
+// Redis
+import { RedisClient } from '@app/Repositories/Cache/Redis';
+RedisClient.connect();
+
 // Mids Import
 import cors from 'cors';
 import morgan from 'morgan';

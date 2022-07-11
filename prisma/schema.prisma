@@ -14,7 +14,7 @@ model User {
 
   first_name String @db.VarChar(30)
   last_name  String @db.VarChar(70)
-
+  password String @db.VarChar(150)
   profile_picture String? @db.VarChar(40)
 
   Subjects   Subject[]
@@ -26,45 +26,52 @@ model Subject {
   id             String  @id @db.VarChar(40)
   name           String  @db.VarChar(20)
   required       Boolean
-  required_grade Int     @db.UnsignedTinyInt
+  lowest_min_grade Int     @db.UnsignedTinyInt
   records        Int?    @db.UnsignedTinyInt
   user_id        String  @db.VarChar(40)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 
   User              User                @relation(fields: [user_id], references: [id])
-  Assignments       Assignment[]
-  Documents          DocumentToSubject[]
+  Assignments       AssignmentsToSubjects[]
   Records             Record[]
+}
+
+model AssignmentsToSubjects {
+  id String @id @db.VarChar(40)
+  subject_id String @db.VarChar(40)
+  assignment_id String @db.VarChar(40)
+  received_grade Int @db.UnsignedTinyInt
+
+  Subject Subject @relation(fields: [subject_id], references: [id])
+  Assignment Assignment @relation(fields: [assignment_id], references: [id])
 }
 
 model Assignment {
   id          String @id @db.VarChar(40)
-  subject_id  String @db.VarChar(40)
-  document_id String @db.VarChar(40)
+  
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 
-  grade Int @db.UnsignedTinyInt
-
-  record_id String? @db.VarChar(40)
-
-  Record    Record?   @relation(fields: [record_id], references: [id])
-  Subject  Subject  @relation(fields: [subject_id], references: [id])
-  Document Document @relation(fields: [document_id], references: [id])
+  Subjects  AssignmentsToSubjects[]
+  Documents DocumentsToAssignments[]
 }
 
-model DocumentToSubject {
-  id          String  @id @db.VarChar(40)
-  subject_id  String @db.VarChar(40)
-  document_id String  @db.VarChar(40)
+model DocumentsToAssignments {
+  id String @id @db.VarChar(40)
+  document_id String @db.VarChar(40)
+  assignment_id String @db.VarChar(40)
 
-  subject  Subject @relation(fields: [subject_id], references: [id])
-  document Document @relation(fields: [document_id], references: [id])
+  Document Document @relation(fields: [document_id], references: [id])
+  Assignment Assignment @relation(fields: [assignment_id], references: [id])
 }
 
 model Document {
   id          String              @id @db.VarChar(40)
-  picture_id    String              @db.VarChar(40)
   description String              @db.Text
-  Subjects    DocumentToSubject[]
-  Assignment  Assignment[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  Assignment  DocumentsToAssignments[]
 }
 
 model Record {
@@ -73,5 +80,10 @@ model Record {
   subject_id String @db.VarChar(40)
 
   Subject    Subject      @relation(fields: [subject_id], references: [id])
-  Assignment Assignment[]
+}
+
+model SecurityCodes {
+  code String @id @db.VarChar(7)
+  user_id String @db.VarChar(40)
+  expires_at DateTime @db.Timestamp
 }
