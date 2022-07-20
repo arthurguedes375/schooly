@@ -13,9 +13,3 @@ Instead of using a lot of apps for each task, schooly gets everything done in on
 - [Docker-compose](https://docs.docker.com/compose/)
 - [Webpack](https://webpack.js.org/)
 - [Babel](https://babeljs.io/)
-
-## Tokens Keys Generation:
-```
-ssh-keygen -t rsa -b 4096 -m PEM -f ${filename}.key
-openssl rsa -in ${filename}.key -pubout -outform PEM -out ${filename}.key.pub
-```
