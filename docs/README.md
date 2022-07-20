@@ -2,7 +2,7 @@
 This project started out of a need of my own. Therefore I only thought about documenting it's code after I had already done a part of it.
 
 # :laughing: Docs of the Docs
-This documentation will be divided into paragraphs, sections, etc...
+This documentation will be divided into topics.
 Maybe not that well organized but I'll give it my best.
 
 # Handling requests.
